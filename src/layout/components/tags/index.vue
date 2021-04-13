@@ -5,13 +5,10 @@
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
+        :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
-        :class="isActive(tag)?'active':''"
-        :style="isActive(tag)?activeTagStyle():tagStyle()"
-        class="tags-item">
-        {{tag.title}}
-        <span v-if="tag.path!='/index'" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+        class="tags-view-item">
       </router-link>
     </scroll-pane>
   </div>
@@ -19,8 +16,7 @@
 
 <script>
 import ScrollPane from './scroll-pane'
-import {mapState} from 'vuex'
-import {theme_options} from '@/settings-options'
+import { mapState } from 'vuex'
 
 export default {
   name: "index",
@@ -36,114 +32,12 @@ export default {
   },
   computed: {
     ...mapState({
-      visitedViews: state => state.tags.visited_views,
-      theme: state => state.settings.theme,
-      themeColor: state => state.settings.theme_color,
-    }),
+        visitedViews: state => state.tags.visited_views
+    })
   },
   methods: {
     isActive(route) {
       return route.path === this.$route.path
-    },
-    tagStyle() {
-      let color = ''
-      let bgcolor = ''
-      let bdcolor = ''
-      switch (this.theme) {
-        case theme_options.standard:
-          color = this.themeColor;
-          bgcolor = '#FFF';
-          bdcolor = this.themeColor;
-          break;
-        case theme_options.light:
-          color = this.themeColor;
-          bgcolor = '#FFF';
-          bdcolor = this.themeColor;
-          break;
-        case theme_options.dark:
-          color = '#FFF';
-          bgcolor = '#303133';
-          bdcolor = '#FFF';
-          break;
-      }
-      return {
-        "color": color,
-        "background-color": bgcolor,
-        "border-color": bdcolor
-      }
-    },
-    activeTagStyle(){
-      let color = ''
-      let bgcolor = ''
-      let bdcolor = ''
-      switch (this.theme) {
-        case theme_options.standard:
-          color = '#FFF';
-          bgcolor = this.themeColor;
-          bdcolor = '#FFF';
-          break;
-        case theme_options.light:
-          color = '#FFF';
-          bgcolor = this.themeColor;
-          bdcolor = '#FFF';
-          break;
-        case theme_options.dark:
-          color = '#FFF';
-          bgcolor = this.themeColor;
-          bdcolor = '#FFF';
-          break;
-      }
-      return {
-        "color": color,
-        "background-color": bgcolor,
-        "border-color": bdcolor
-      }
-    },
-    toLastView(visitedViews, view) {
-      const latestView = visitedViews.slice(-1)[0]
-      if (latestView) {
-        this.$router.push(latestView.fullPath)
-      } else {
-        if (view.name === 'Dashboard') {
-          this.$router.replace({ path: '/redirect' + view.fullPath })
-        } else {
-          this.$router.push('/')
-        }
-      }
-    },
-    closeSelectedTag(view) {
-      this.$store.dispatch('tags/delView', view).then(({ visitedViews }) => {
-        if (this.isActive(view)) {
-          this.toLastView(visitedViews, view)
-        }
-      })
-    },
-    addTag() {
-      this.$store.dispatch('tags/addView', this.$route)
-    },
-    moveToCurrentTag() {
-      const tags = this.$refs.tag
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag)
-            // when query is different then update
-            if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
-            }
-            break
-          }
-        }
-      })
-    },
-  },
-  mounted() {
-    this.addTag()
-  },
-  watch: {
-    $route() {
-      this.addTag()
-      this.moveToCurrentTag()
     }
   }
 }
@@ -163,25 +57,26 @@ export default {
       cursor: pointer;
       height: 26px;
       line-height: 26px;
-      border-right: 1px solid;
-      border-bottom: 1px solid;
+      border: 1px solid #d8dce5;
+      color: #495060;
+      background: #fff;
       padding: 0 8px;
       font-size: 12px;
-      margin-top: 5px;
+      margin-left: 5px;
+      margin-top: 4px;
       &:first-of-type {
         margin-left: 15px;
-        border-left: 1px solid;
       }
       &:last-of-type {
         margin-right: 15px;
       }
       &.active {
-        border-top: 1px solid;
-        border-bottom: 1px solid;
-
+        background-color: #42b983;
+        color: #fff;
+        border-color: #42b983;
         &::before {
           content: '';
-          background-color: #FFFFFF;
+          background: #fff;
           display: inline-block;
           width: 8px;
           height: 8px;
@@ -190,7 +85,6 @@ export default {
           margin-right: 2px;
         }
       }
-
     }
   }
 }

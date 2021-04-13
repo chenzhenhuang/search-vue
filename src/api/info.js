@@ -10,35 +10,35 @@ export function createEmployeeInfo(Info){
 
 export function changeEmployeeInfo(id){
   return request({
-    url: '/info/employee/' + id,
+    url: '/info/employee' + id,
     method: 'put'
   })
 }
 
 export function searchInfobyId(id){
   return request({
-    url: '/info/employee/' + id,
+    url: '/info/employee' + id,
     method: 'get'
   })
 }
 
-export function enterpriseInfo(){
+export function searchEnterpriseInfo(){
   return request({
     url: '/info/enterprise',
     method: 'get'
   })
 }
 
-export function hrInfo(){
+export function hrSearchHrInfo(id){
   return request({
-    url: '/info/hr',
+    url: '/info/hr' + id,
     method: 'get'
   })
 }
 
-export function managerInfo(){
+export function managerSearchManagerInfo(id){
   return request({
-    url: '/info/manager',
+    url: '/info/manager' + id,
     method: 'get'
   })
 }

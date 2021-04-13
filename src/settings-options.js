@@ -17,6 +17,10 @@ module.exports = {
         hidden: false,
         component: 'layout',
         redirect: 'index',
+        meta: {
+          icon: "system",
+          title: '首页'
+        },
         children: [
           {
             path: 'index',
@@ -26,6 +30,14 @@ module.exports = {
               title: '首页'
             }
           },
+          {
+            path: '/info-update/:id',
+            meta: {
+              icon: "system",
+              title: '信息修改'
+            },
+            component: 'hr/employee-manager/info-update',
+          }
         ]
       },
       {
@@ -47,30 +59,20 @@ module.exports = {
             }
           },
           {
+            path: '',
+            component: 'hr/employee-manager',
+            meta: {
+              icon: "system",
+              title: '员工管理'
+            }
+          },
+          {
             path: 'detail',
             meta: {
               icon: "system",
               title: '详细信息'
             },
-            component: 'parent-view',
-            children: [
-              {
-                path: '',
-                meta: {
-                  icon: "system",
-                  title: '个人信息'
-                },
-                component: 'hr/employee-manager/search',
-              },
-              {
-                path: 'career',
-                meta: {
-                  icon: "system",
-                  title: '经历信息'
-                },
-                component: 'hr/employee-manager/search',
-              },
-            ]
+            component: 'hr/employee-manager/search',
           },
           {
             path: 'detail/:id',
@@ -79,27 +81,7 @@ module.exports = {
               icon: "system",
               title: '详细信息'
             },
-            component: 'parent-view',
-            children: [
-              {
-                path: '',
-                hidden: true,
-                meta: {
-                  icon: "system",
-                  title: '个人信息'
-                },
-                component: 'hr/employee-manager/detail'
-              },
-              {
-                path: 'career/:carid',
-                hidden: true,
-                meta: {
-                  icon: "system",
-                  title: '经历信息'
-                },
-                component: 'hr/employee-manager/career',
-              },
-            ]
+            component: 'hr/employee-manager/detail',
           },
           {
             path: 'info-update',
@@ -133,17 +115,15 @@ module.exports = {
       {value: 'GENDER', label: '性别'},
       {value: 'SENIORITY', label: '工龄'},
       {value: 'DEGREE', label: '学历'},
+      {value: 'ATTENDANCE', label: '出勤率'},
+      {value: 'PERFORMANCE', label: '绩效'},
+      {value: 'ATTITUDE', label: '工作态度'},
+      {value: 'ABILITY', label: '工作能力'},
       {value: 'OCCUPATION', label: '职业'},
     ],
     order_type: [
       {value: 'BIRTH', label: '年龄'},
       {value: 'DEGREE', label: '学历'},
     ]
-  },
-  role_name_mapper: {
-    "ROLE_HR": "hr",
-    "ROLE_MANAGER": "manager",
-    "ROLE_ENTERPRISE": "enterprise",
-    "ROLE_ANONYMOUS": null
   }
 }

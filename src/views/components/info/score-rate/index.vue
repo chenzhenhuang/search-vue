@@ -51,6 +51,8 @@ export default {
       texts_ability: ['能力差','能力较差','能力一般','能力较好','能力极好',]
     }
   },
+  mounted() {
+  }
 }
 </script>
 

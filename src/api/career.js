@@ -37,9 +37,9 @@ export function searchAllCrimebyEmpid(empid){
   })
 }
 
-export function searchThisAvgbyCarid(carid){
+export function searchThisAvgbyCarid(empid){
   return request({
-    url: '/career/curavgscore/' + carid,
+    url: '/career/curavgscore/' + empid,
     method: 'get'
   })
 }
@@ -79,11 +79,10 @@ export function employerQuit(empid){
   })
 }
 
-export function searchCommentbyCaridPageSize(carid, page, pageSize){
+export function searchCommentbyCaridPageSize(carid, page, pagesize){
   return request({
     url: '/career/score',
-    method: 'get',
-    params: {carid, page, pageSize}
+    method: 'get'
   })
 }
 
@@ -96,15 +95,7 @@ export function detailedComment(){
 
 export function searchAllCareerbyEmpid(empid){
   return request({
-    url: '/career/employee/' + empid,
-    method: 'get'
-  })
-}
-
-
-export function searchCareerbyCarid(carid){
-  return request({
-    url: '/career/' + carid,
+    url: '/career/' + empid,
     method: 'get'
   })
 }

@@ -1,16 +1,15 @@
-import {hrInfo, managerInfo, enterpriseInfo} from '@/api/info'
-import {getUserInfobySessionId} from '@/api/user'
+import {login, logout, getInfo} from '@/api/passport'
 import {getSessionId, setSessionId, removeSessionId} from '@/utils/auth'
 import {constantRoutes} from "@/router";
-import {role_routes, role_name_mapper} from '@/settings-options'
+import {role_routes} from '@/settings-options'
 import Layout from '@/layout'
 
 const user = {
   state: {
-    id: null,
+    sessionId: '',
     name: '',
     photo: '',
-    role: null,
+    role: '',
     remeber_me: false,
     routes: [],
     addRoutes: [],
@@ -18,8 +17,8 @@ const user = {
   },
 
   mutations: {
-    SET_ID: (state, id) => {
-      state.id = id
+    SET_SESSIONID: (state, sessionId) => {
+      state.sessionId = sessionId
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -52,39 +51,16 @@ const user = {
     },
     GetInfo({commit}){
       return new Promise((resolve, reject) => {
-        const callBack = res=>{
-          if (res.data.code === 100){
-            let data = res.data.data
-            const id = data.id
-            const name = data.name
-            const photo = data.photo
-            commit('SET_ID', id)
-            commit('SET_NAME', name)
-            commit('SET_PHOTO', photo)
-            resolve(res)
-          }
-        }
-        switch (this.state.user.role) {
-          case "hr":
-            hrInfo().then(callBack)
-            break
-          case "manager":
-            managerInfo().then(callBack)
-            break
-          case "enterprise":
-            enterpriseInfo().then(callBack)
-            break
-        }
-      })
-    },
-    GetRole({commit}){
-      return new Promise((resolve, reject)=> {
-        getUserInfobySessionId().then(res => {
-          if (res.data.code === 100) {
-            let role_name = res.data.data
-            commit('SET_ROLE', role_name_mapper[role_name])
-            resolve(res)
-          }
+        getInfo().then(res=>{
+          const role = res.data.role
+          const name = res.data.name
+          const photo = res.data.photo
+          commit('SET_ROLE', role)
+          commit('SET_NAME', name)
+          commit('SET_PHOTO', photo)
+          resolve(res)
+        }).catch(error => {
+          reject(error)
         })
       })
     },
